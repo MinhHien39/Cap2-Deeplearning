@@ -1,0 +1,47 @@
+Model/
+test_sep/
+train_sep/
+uploads/
+*pt
+*keras
+dataYOLO2/
+dataYOLO/
+checkpoints/
+dataset/
+results/
+static/
+YOLOv8/
+*h5
+.vscode/
+.idea/
+dist/
+build/
+# File cache
+*.cache
+
+# File backup
+*.swp
+*~
+
+# File tạm thời
+*.tmp
+*.temp
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.o
+*.out
+
+# JavaScript
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Excel temporary files
+~$*.xlsx
+~$*.xls
