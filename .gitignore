@@ -1,21 +1,27 @@
-Model/
-test_sep/
-train_sep/
-uploads/
-*pt
-*keras
-dataYOLO2/
-dataYOLO/
-checkpoints/
-dataset/
-results/
-static/
-YOLOv8/
-*h5
+# Các file hệ thống
+.DS_Store
+Thumbs.db
+
+# Thư mục và file của môi trường phát triển
 .vscode/
 .idea/
+*.sublime-project
+*.sublime-workspace
+
+# Thư mục dependency
+node_modules/
+vendor/
+
+# File log
+*.log
+
+# File môi trường
+.env
+
+# Thư mục build và distribution
 dist/
 build/
+
 # File cache
 *.cache
 
@@ -31,6 +37,12 @@ build/
 __pycache__/
 *.py[cod]
 *.so
+
+# Java
+*.class
+*.jar
+
+# C/C++
 *.o
 *.out
 
@@ -45,3 +57,6 @@ yarn-error.log*
 # Excel temporary files
 ~$*.xlsx
 ~$*.xls
+
+output/
+*pt

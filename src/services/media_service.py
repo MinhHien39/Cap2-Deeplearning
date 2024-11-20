@@ -196,6 +196,67 @@ class MediaService:
 
         return detected_crimes, crime_confidences
 
+    def _save_detected_frames(
+        self, detected_frames: dict, detected_crimes: list, output_dir: str
+    ):
+        """Save detected frames for each crime type"""
+        for crime in detected_crimes:
+            crime_dir = os.path.join(output_dir, crime)
+            os.makedirs(crime_dir, exist_ok=True)
+
+            sorted_frames = sorted(
+                detected_frames[crime], key=lambda x: x["confidence"], reverse=True
+            )
+
+            for frame_data in sorted_frames:
+                frame_path = os.path.join(
+                    crime_dir,
+                    f"frame_{frame_data['frame_number']}_"
+                    f"conf_{frame_data['confidence']:.2f}.jpg",
+                )
+                cv2.imwrite(frame_path, frame_data["frame"])
+
+    def _generate_video_summary(
+        self,
+        frames: List[np.ndarray],
+        detected_crimes: List[str],
+        crime_confidences: Dict[str, float],
+        output_dir: str,
+    ) -> str:
+        """Generate and save summary frame for video"""
+        middle_frame = frames[len(frames) // 2].copy()
+
+        # Add text to summary frame
+        text = "NORMAL"
+        color = (0, 255, 0)
+
+        if detected_crimes:
+            crime_texts = [
+                f"{crime} ({crime_confidences.get(crime, 0.0):.2f})"
+                for crime in detected_crimes
+            ]
+            text = "CRIMES: " + ", ".join(crime_texts)
+            color = (0, 0, 255)
+
+        # Add text to frame
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        (text_width, text_height), _ = cv2.getTextSize(text, font, 1, 2)
+
+        cv2.rectangle(
+            middle_frame,
+            (10, 10),
+            (20 + text_width, 20 + text_height),
+            (255, 255, 255),
+            -1,
+        )
+
+        cv2.putText(middle_frame, text, (15, 15 + text_height), font, 1, color, 2)
+
+        # Save summary
+        summary_path = os.path.join(output_dir, "summary.jpg")
+        cv2.imwrite(summary_path, middle_frame)
+        return summary_path
+
     async def process_image(
         self, image_file: UploadFile, conf_threshold: float = 0.1
     ) -> ImageResult:
